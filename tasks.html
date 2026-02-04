@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title data-key="tasks">المهام</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1 data-key="tasks">المهام</h1>
+
+  <nav>
+    <a href="index.html" data-key="nav_home">الرئيسية</a>
+    <a href="appointments.html" data-key="nav_appointments">المواعيد</a>
+    <a href="about.html" data-key="nav_about">عنّا</a>
+  </nav>
+
+  <button class="lang-btn" onclick="toggleLang()">AR / EN</button>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <input type="text" id="taskText" data-key-placeholder="task_placeholder" placeholder="اكتب المهمة">
+    <input type="datetime-local" id="taskTime">
+    <button onclick="addTask()" data-key="add">إضافة</button>
+  </div>
+
+  <h3 data-key="tasks">المهام</h3>
+  <div id="taskList"></div>
+
+</div>
+
+<script>
+/* ===== التخزين ===== */
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+/* ===== إشعار (مرة وحدة) ===== */
+if ("Notification" in window && Notification.permission === "default") {
+  Notification.requestPermission();
+}
+
+/* ===== إضافة مهمة ===== */
+function addTask() {
+  const text = taskText.value;
+  const time = taskTime.value;
+
+  if (!text || !time) {
+    alert("اكتبي المهمة وحددي الوقت");
+    return;
+  }
+
+  tasks.push({
+    id: Date.now(),
+    text,
+    time,
+    done: false
+  });
+
+  saveTasks();
+  renderTasks();
+
+  if (Notification.permission === "granted") {
+    new Notification("📌 مهمة جديدة", { body: text });
+  }
+
+  taskText.value = "";
+  taskTime.value = "";
+}
+
+/* ===== حفظ ===== */
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+/* ===== حذف ===== */
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  saveTasks();
+  renderTasks();
+}
+
+/* ===== إنجاز ===== */
+function markDone(id) {
+  tasks = tasks.map(t =>
+    t.id === id ? { ...t, done: true } : t
+  );
+  saveTasks();
+  renderTasks();
+}
+
+/* ===== عرض مرتب بالتاريخ والساعة ===== */
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  // ترتيب حسب الوقت
+  tasks.sort((a, b) => new Date(a.time) - new Date(b.time));
+
+  // تجميع
+  const grouped = {};
+
+  tasks.forEach(task => {
+    const date = task.time.split("T")[0];
+    const hour = task.time.split("T")[1].slice(0, 5);
+
+    if (!grouped[date]) grouped[date] = {};
+    if (!grouped[date][hour]) grouped[date][hour] = [];
+
+    grouped[date][hour].push(task);
+  });
+
+  // عرض
+  Object.keys(grouped).forEach(date => {
+    const dateTitle = document.createElement("h3");
+    dateTitle.innerText = `📅 ${date}`;
+    list.appendChild(dateTitle);
+
+    Object.keys(grouped[date]).forEach(hour => {
+      const hourTitle = document.createElement("h4");
+      hourTitle.innerText = `⏰ ${hour}`;
+      list.appendChild(hourTitle);
+
+      grouped[date][hour].forEach(task => {
+        const div = document.createElement("div");
+        div.className = "task";
+        if (task.done) div.classList.add("done");
+
+        div.innerHTML = `
+          <span>${task.text}</span>
+          <div class="task-actions">
+            <button onclick="markDone(${task.id})">✔</button>
+            <button onclick="deleteTask(${task.id})">🗑</button>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    });
+  });
+}
+
+/* ===== تحميل ===== */
+renderTasks();
+</script>
+
+<!-- ربط الترجمة -->
+<script src="script.js"></script>
+
+</body>
+</html>
+

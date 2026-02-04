@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>عن التطبيق</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1 id="title">عن التطبيق</h1>
+  <nav>
+    <a href="index.html" id="navHome">الرئيسية</a>
+    <a href="tasks.html" id="navTasks">المهام</a>
+    <a href="appointments.html" id="navApp">المواعيد</a>
+    <a href="about.html" id="navAbout">عنّا</a>
+    <button class="lang-btn" onclick="toggleLang()">AR / EN</button>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="card">
+    <h2 id="aboutTitle">ما هو هذا التطبيق؟</h2>
+    <p id="aboutDesc">
+      هذا التطبيق يساعدك على تنظيم مهامك اليومية ومواعيدك الشهرية بطريقة بسيطة وواضحة،
+      بحيث تقدر تتابع كل شيء في مكان واحد بدون تعقيد.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 id="featuresTitle">ماذا يقدّم لك؟</h2>
+    <ul id="featuresList">
+      <li>📌 إضافة مهام مع وقت وتاريخ</li>
+      <li>🔔 إشعارات للتنبيه بالمهام</li>
+      <li>📅 تقويم شهري للمواعيد</li>
+      <li>💾 حفظ تلقائي للبيانات</li>
+      <li>🌍 دعم اللغة العربية والإنجليزية</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 id="privacyTitle">الخصوصية</h2>
+    <p id="privacyDesc">
+      جميع بياناتك محفوظة على جهازك فقط، ولا يتم إرسال أي معلومات إلى الإنترنت.
+      يمكنك استخدام التطبيق وأنت مطمئن تمامًا.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2 id="helpTitle">نصائح للاستخدام</h2>
+    <ul id="helpList">
+      <li>احرص على تفعيل الإشعارات عند الطلب</li>
+      <li>راجع مهامك يوميًا</li>
+      <li>حدّث مواعيدك أولًا بأول</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+let isArabic = true;
+
+function toggleLang() {
+  if (isArabic) {
+    document.body.style.direction = "ltr";
+    document.documentElement.lang = "en";
+
+    title.innerText = "About the App";
+    navHome.innerText = "Home";
+    navTasks.innerText = "Tasks";
+    navApp.innerText = "Appointments";
+    navAbout.innerText = "About";
+
+    aboutTitle.innerText = "What is this app?";
+    aboutDesc.innerText =
+      "This app helps you organize your daily tasks and monthly appointments in a simple and clear way, all in one place.";
+
+    featuresTitle.innerText = "What does it offer?";
+    featuresList.innerHTML = `
+      <li>📌 Add tasks with date and time</li>
+      <li>🔔 Task notifications</li>
+      <li>📅 Monthly appointment calendar</li>
+      <li>💾 Automatic saving</li>
+      <li>🌍 Arabic & English support</li>
+    `;
+
+    privacyTitle.innerText = "Privacy";
+    privacyDesc.innerText =
+      "All your data is stored locally on your device. No information is sent online.";
+
+    helpTitle.innerText = "Usage Tips";
+    helpList.innerHTML = `
+      <li>Allow notifications when prompted</li>
+      <li>Check your tasks daily</li>
+      <li>Keep your appointments updated</li>
+    `;
+
+  } else {
+    document.body.style.direction = "rtl";
+    document.documentElement.lang = "ar";
+
+    title.innerText = "عن التطبيق";
+    navHome.innerText = "الرئيسية";
+    navTasks.innerText = "المهام";
+    navApp.innerText = "المواعيد";
+    navAbout.innerText = "عنّا";
+
+    aboutTitle.innerText = "ما هو هذا التطبيق؟";
+    aboutDesc.innerText =
+      "هذا التطبيق يساعدك على تنظيم مهامك اليومية ومواعيدك الشهرية بطريقة بسيطة وواضحة.";
+
+    featuresTitle.innerText = "ماذا يقدّم لك؟";
+    featuresList.innerHTML = `
+      <li>📌 إضافة مهام مع وقت وتاريخ</li>
+      <li>🔔 إشعارات للتنبيه بالمهام</li>
+      <li>📅 تقويم شهري للمواعيد</li>
+      <li>💾 حفظ تلقائي للبيانات</li>
+      <li>🌍 دعم اللغة العربية والإنجليزية</li>
+    `;
+
+    privacyTitle.innerText = "الخصوصية";
+    privacyDesc.innerText =
+      "جميع بياناتك محفوظة على جهازك فقط ولا يتم إرسال أي معلومات إلى الإنترنت.";
+
+    helpTitle.innerText = "نصائح للاستخدام";
+    helpList.innerHTML = `
+      <li>احرص على تفعيل الإشعارات</li>
+      <li>راجع مهامك يوميًا</li>
+      <li>حدّث مواعيدك باستمرار</li>
+    `;
+  }
+
+  isArabic = !isArabic;
+}
+</script>
+</body>
+</html>
